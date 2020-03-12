@@ -36,7 +36,7 @@ public class SubjectController {
             //删除成功
             return R.ok();
         } else {
-            //删除失败
+
             return R.error();
         }
 
