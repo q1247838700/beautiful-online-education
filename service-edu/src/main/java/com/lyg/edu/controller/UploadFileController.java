@@ -17,15 +17,16 @@ import java.net.URL;
 @ApiModel("文件上传,其实就是上传头像")
 @RestController
 @CrossOrigin
-@RequestMapping("/edu/teacher/oss")
+@RequestMapping("/edu/oss")
 public class UploadFileController {
     @ApiOperation("文件上传方法")
     @PostMapping("/upload")
-    public R upload(@RequestParam("file") MultipartFile file) {
+
+    public R upload(@RequestParam("file") MultipartFile file,@RequestParam(value = "host",defaultValue = "teacherPhoto",required = false)String host) {
         UploadUtil util = new UploadUtil();
         String url = null;
         try {
-            url = util.update(file);
+            url = util.update(file,host);
         } catch (IOException e) {
             e.printStackTrace();
         }

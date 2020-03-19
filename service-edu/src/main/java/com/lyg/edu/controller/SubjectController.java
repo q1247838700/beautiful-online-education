@@ -49,7 +49,7 @@ public class SubjectController {
 
         System.out.println(subject);
         boolean save = service.saveSubject(subject);
-        if (save){
+        if (save) {
             return R.ok().message("添加成功");
         }
         return R.error().message("添加失败");

@@ -16,13 +16,13 @@ import java.util.UUID;
  */
 public class UploadUtil {
 
-    public String  update(MultipartFile file) throws IOException {
+    public String update(MultipartFile file,String host) throws IOException {
         OSS ossClient = new OSSClientBuilder().build(ConstantPropertiesUtil.ENDPOINT, ConstantPropertiesUtil.KEYID, ConstantPropertiesUtil.KEYSECRET);
         InputStream inputStream = file.getInputStream();
         String name = file.getOriginalFilename();//获取文件名
         String uuid = UUID.randomUUID().toString();
-        String filePath=DateTime.now().toString("yyyy/MM/dd");
-         name=filePath+"/"+uuid+name;
+        String filePath = DateTime.now().toString("yyyy/MM/dd");
+        name = host+"/"+filePath + "/" + uuid + name;
 
         //https://edu-lyg.oss-cn-hangzhou.aliyuncs.com/pig.png
 // 上传文件流。
@@ -32,6 +32,6 @@ public class UploadUtil {
 // 关闭OSSClient。
         ossClient.shutdown();
 
-        return "https://"+ConstantPropertiesUtil.BUCKETNAME+"."+ConstantPropertiesUtil.ENDPOINT+"/"+name;
+        return "https://" + ConstantPropertiesUtil.BUCKETNAME + "." + ConstantPropertiesUtil.ENDPOINT + "/" + name;
     }
 }
