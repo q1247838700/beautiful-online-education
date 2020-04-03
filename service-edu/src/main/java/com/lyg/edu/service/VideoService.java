@@ -1,5 +1,6 @@
 package com.lyg.edu.service;
 
+import com.lyg.edu.common.R;
 import com.lyg.edu.entity.Video;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface VideoService extends IService<Video> {
 
+    R saveVideo(Video video);
+
+    R updateVideo(Video video);
 }

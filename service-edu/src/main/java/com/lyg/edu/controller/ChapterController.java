@@ -22,12 +22,13 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/edu/chapter")
+@CrossOrigin
 public class ChapterController {
     @Autowired
     private ChapterService service;
 @ApiOperation("根据id返回章节树")
-@GetMapping("/ChapterTree")
-    public R getChapterTree(String id){
+@GetMapping("/chapterTree/{id}")
+    public R getChapterTree(@PathVariable("id") String id){
        List<ChapterDto> list= service.getChapterTree(id);
        return R.ok().data("tree", list);
     }
@@ -44,8 +45,8 @@ public class ChapterController {
      * @param id
      * @return
      */
-    @GetMapping("/id")
-    public R getChapterById(String id) {
+    @GetMapping("/{id}")
+    public R getChapterById(@PathVariable("id") String id) {
 
         Chapter chapter = service.getById(id);
         if (chapter != null) {
@@ -72,13 +73,13 @@ public class ChapterController {
         }
     }
 
-    @DeleteMapping("/deleteChapter")
-    public R deleteChapterById(String id) {
-        boolean b = service.removeById(id);
+    @DeleteMapping("/deleteChapter/{id}")
+    public R deleteChapterById(@PathVariable("id") String id) {
+        boolean b = service.removeByIdIfExistVideo(id);
         if (b) {
             return R.ok();
         } else {
-            return R.error();
+            return R.error().message("该分类下有子节点,不能进行删除");
         }
     }
 

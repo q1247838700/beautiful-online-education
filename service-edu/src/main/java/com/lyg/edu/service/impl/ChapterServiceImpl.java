@@ -71,4 +71,22 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterMapper, Chapter> impl
         }
         return list;
     }
+
+    /**
+     * 判断该chapter下是否有video,若是有的话就不让删除
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean removeByIdIfExistVideo(String id) {
+        //根据id查询video数据有多少个
+        QueryWrapper<Video> wrapper = new QueryWrapper<>();
+       wrapper.eq("chapter_id", id);
+        int count = service.count(wrapper);
+        if (count==0){
+            //此时执行删除操作
+            baseMapper.deleteById(id);
+        }
+        return count==0;
+    }
 }

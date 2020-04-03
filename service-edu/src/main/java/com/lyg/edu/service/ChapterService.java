@@ -18,4 +18,6 @@ public interface ChapterService extends IService<Chapter> {
 
 
     List<ChapterDto> getChapterTree(String id);
+
+    boolean removeByIdIfExistVideo(String id);
 }
