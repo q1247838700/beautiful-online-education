@@ -63,9 +63,7 @@ public class VideoController {
         return service.updateVideo(video);
     }
 
-    /**
-     * 查
-     */
+
     @GetMapping("/{id}")
     public R getVideo(@PathVariable String id) {
         Video video = service.getById(id);
