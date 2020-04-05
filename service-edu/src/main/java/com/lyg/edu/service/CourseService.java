@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lyg.edu.common.R;
 import com.lyg.edu.entity.Course;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lyg.edu.entity.CourseDetails;
 import com.lyg.edu.entity.query.CourseQuery;
 import com.lyg.edu.entity.query.CourseWrapper;
 
@@ -26,4 +27,6 @@ public interface CourseService extends IService<Course> {
     R deleteCourseById(String id);
 
     R updateCourseById(CourseQuery query);
+
+    CourseDetails getCourseDetails(String id);
 }

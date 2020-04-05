@@ -1,4 +1,4 @@
-package com.lyg.edu.exception;
+package com.lyg.edu.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

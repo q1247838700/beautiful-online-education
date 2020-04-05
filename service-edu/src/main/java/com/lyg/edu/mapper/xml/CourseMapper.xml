@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lyg.edu.mapper.CourseMapper">
-
+    <select id="getCourseDetails" resultType="com.lyg.edu.entity.CourseDetails">
+    select c.id id, c.title courseName,c.lesson_num lessonNum, c.price price, c.cover url,c.`status` status,s.title parentSubject,su.title subject,t.name teacherName
+    from edu_course c
+    LEFT JOIN edu_subject s ON c.parent_subject_id=s.id
+    LEFT JOIN edu_subject su on c.subject_id=su.id
+    LEFT JOIN edu_teacher t ON c.teacher_id=t.id
+    WHERE c.id=#{id}
+</select>
 </mapper>

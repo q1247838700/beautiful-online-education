@@ -5,6 +5,7 @@
     <modules>
         <module>service-edu</module>
         <module>online-education-common</module>
+        <module>edu-video</module>
     </modules>
 
 
@@ -100,6 +101,7 @@
     </dependencyManagement>
 
     <build>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lyg.edu.common.R;
 import com.lyg.edu.entity.Teacher;
 import com.lyg.edu.entity.query.TeacherQuery;
-import com.lyg.edu.exception.EduException;
+
 import com.lyg.edu.service.TeacherService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;

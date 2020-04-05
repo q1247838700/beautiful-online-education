@@ -2,11 +2,12 @@ package com.lyg.edu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.lyg.edu.common.EduException;
 import com.lyg.edu.entity.Chapter;
 import com.lyg.edu.entity.Video;
 import com.lyg.edu.entity.query.ChapterDto;
 import com.lyg.edu.entity.query.VideoDto;
-import com.lyg.edu.exception.EduException;
+
 import com.lyg.edu.mapper.ChapterMapper;
 import com.lyg.edu.service.ChapterService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

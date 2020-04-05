@@ -1,9 +1,11 @@
 package com.lyg.edu.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lyg.edu.common.R;
 import com.lyg.edu.entity.Course;
+import com.lyg.edu.entity.CourseDetails;
 import com.lyg.edu.entity.query.CourseQuery;
 import com.lyg.edu.entity.query.CourseWrapper;
 import com.lyg.edu.service.CourseService;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * <p>
@@ -58,6 +61,62 @@ public class CourseController {
 
         return R.ok().data("total", total).data("rows", records);
     }
+
+    /**
+     * 发布该课程
+     * @param id
+     * @return
+     */
+    @PutMapping("publish/{id}")
+    public R publishCourse(@PathVariable String id) {
+
+        QueryWrapper<Course> wrapper = new QueryWrapper<>();
+        Course course = new Course();
+        course.setId(id);
+        course.setStatus("true");
+        boolean b = service.updateById(course);
+        if (b) {
+            return R.ok().message("发布成功");
+        } else {
+            return R.error().message("发布失败");
+        }
+    }
+    /**
+     * 取消发布该课程
+     * @param id
+     * @return
+     */
+    @PutMapping("cancel/{id}")
+    public R cancelCourse(@PathVariable String id) {
+
+        QueryWrapper<Course> wrapper = new QueryWrapper<>();
+        Course course = new Course();
+        course.setId(id);
+        course.setStatus("Draft");
+        boolean b = service.updateById(course);
+        if (b) {
+            return R.ok().message("取消成功");
+        } else {
+            return R.error().message("取消失败");
+        }
+    }
+
+    /**
+     * 获取该课程细节
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/details/{id}")
+    public R getCourseDetails(@PathVariable String id) {
+        CourseDetails details = service.getCourseDetails(id);
+        if (details == null) {
+            return R.error().message("没有该课程");
+        } else {
+            return R.ok().data("item", details);
+        }
+    }
+
 
     /**
      * 保存课程的方法,要不保存course,要不保存CourseDescription,二选一

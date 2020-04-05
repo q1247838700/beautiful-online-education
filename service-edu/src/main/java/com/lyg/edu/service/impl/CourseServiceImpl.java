@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lyg.edu.common.R;
 import com.lyg.edu.entity.Course;
 import com.lyg.edu.entity.CourseDescription;
+import com.lyg.edu.entity.CourseDetails;
 import com.lyg.edu.entity.query.CourseQuery;
 import com.lyg.edu.entity.query.CourseWrapper;
 import com.lyg.edu.mapper.CourseMapper;
@@ -156,5 +157,11 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         service.updateById(courseDescription);
 
         return R.ok().data("course", query);
+    }
+
+    @Override
+    public CourseDetails getCourseDetails(String id) {
+        CourseDetails details= baseMapper.getCourseDetails(id);
+        return details;
     }
 }

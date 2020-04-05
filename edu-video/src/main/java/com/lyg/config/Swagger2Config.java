@@ -1,4 +1,4 @@
-package com.lyg.edu.config;
+package com.lyg.config;
 
 import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class Swagger2Config {
     @Bean
-    public Docket webApiConfig(){
+    public Docket webApiConfig() {
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("webApi")
@@ -31,7 +31,7 @@ public class Swagger2Config {
     }
 
 
-    private ApiInfo webApiInfo(){
+    private ApiInfo webApiInfo() {
 
         return new ApiInfoBuilder()
                 .title("网站-教师管理API文档")
