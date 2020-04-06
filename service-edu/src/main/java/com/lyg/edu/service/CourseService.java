@@ -8,6 +8,8 @@ import com.lyg.edu.entity.CourseDetails;
 import com.lyg.edu.entity.query.CourseQuery;
 import com.lyg.edu.entity.query.CourseWrapper;
 
+import java.util.List;
+
 /**
  * <p>
  * 课程 服务类
@@ -29,4 +31,8 @@ public interface CourseService extends IService<Course> {
     R updateCourseById(CourseQuery query);
 
     CourseDetails getCourseDetails(String id);
+
+    R deleteCourse(String id);
+
+
 }

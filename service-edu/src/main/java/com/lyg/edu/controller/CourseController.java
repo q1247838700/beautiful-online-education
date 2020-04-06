@@ -9,6 +9,7 @@ import com.lyg.edu.entity.CourseDetails;
 import com.lyg.edu.entity.query.CourseQuery;
 import com.lyg.edu.entity.query.CourseWrapper;
 import com.lyg.edu.service.CourseService;
+import com.lyg.edu.service.feignservice.FeignVideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +35,8 @@ import java.util.concurrent.locks.ReentrantLock;
 public class CourseController {
     @Autowired
     private CourseService service;
+    @Autowired
+    private FeignVideoService feignVideoService;
 
     /**
      * 因为和teacher类里面的分页查找冲突,所以没有直接敲,
@@ -143,10 +146,16 @@ public class CourseController {
         return service.getCourseById(id);
     }
 
+    /**
+     * 通过id删除该课时
+     * @param id
+     * @return
+     */
     @ApiOperation("删除课程")
     @DeleteMapping("/{id}")
     public R deleteById(@PathVariable("id") String id) {
-        return service.deleteCourseById(id);
+
+        return service.deleteCourse(id);
     }
 
     @ApiOperation("修改课程")

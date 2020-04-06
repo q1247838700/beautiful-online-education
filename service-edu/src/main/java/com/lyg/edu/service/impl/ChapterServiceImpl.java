@@ -1,5 +1,6 @@
 package com.lyg.edu.service.impl;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lyg.edu.common.EduException;
@@ -42,6 +43,7 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterMapper, Chapter> impl
      * @return
      */
     @Override
+    @SentinelResource(value = "getChapterTree")
     public List<ChapterDto> getChapterTree(String id) {
         //1.根据id来求出所有的章节
         if (StringUtils.isEmpty(id)) {
@@ -61,7 +63,7 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterMapper, Chapter> impl
             ChapterDto chapterDto = new ChapterDto();
             BeanUtils.copyProperties(chapter, chapterDto);
             //通过stream流来处理list,贼爽
-            List<VideoDto> videoDtos = videoList.stream().filter(v -> v.getChapterId().equals(chapterDto.getId()) )
+            List<VideoDto> videoDtos = videoList.stream().filter(v -> v.getChapterId().equals(chapterDto.getId()))
                     .map(v -> {
                         VideoDto videoDto = new VideoDto();
                         BeanUtils.copyProperties(v, videoDto);
@@ -75,19 +77,21 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterMapper, Chapter> impl
 
     /**
      * 判断该chapter下是否有video,若是有的话就不让删除
+     *
      * @param id
      * @return
      */
     @Override
+    @SentinelResource(value = "removeByIdIfExistVideo")
     public boolean removeByIdIfExistVideo(String id) {
         //根据id查询video数据有多少个
         QueryWrapper<Video> wrapper = new QueryWrapper<>();
-       wrapper.eq("chapter_id", id);
+        wrapper.eq("chapter_id", id);
         int count = service.count(wrapper);
-        if (count==0){
+        if (count == 0) {
             //此时执行删除操作
             baseMapper.deleteById(id);
         }
-        return count==0;
+        return count == 0;
     }
 }

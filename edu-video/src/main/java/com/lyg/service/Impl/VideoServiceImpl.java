@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * @author lyg
@@ -58,7 +59,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public void removeVideo(String videoId) {
-        try{
+        try {
             DefaultAcsClient client = AliyunVodSDKUtils.initVodClient(
                     ConstantPropertiesUtil.ACCESS_KEY_ID,
                     ConstantPropertiesUtil.ACCESS_KEY_SECRET);
@@ -71,7 +72,33 @@ public class VideoServiceImpl implements VideoService {
 
             System.out.print("RequestId = " + response.getRequestId() + "\n");
 
-        }catch (ClientException e){
+        } catch (ClientException e) {
+            throw new EduException(20001, "视频删除失败");
+        }
+    }
+
+    @Override
+    public void removeManyVideo(List<String> videoIdList) {
+        try {
+            DefaultAcsClient client = AliyunVodSDKUtils.initVodClient(
+                    ConstantPropertiesUtil.ACCESS_KEY_ID,
+                    ConstantPropertiesUtil.ACCESS_KEY_SECRET);
+
+            DeleteVideoRequest request = new DeleteVideoRequest();
+
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < videoIdList.size(); i++) {
+                buffer.append(videoIdList.get(i) + ",");
+
+            }
+            String videoIds = buffer.substring(0, buffer.lastIndexOf(",")).toString();
+            request.setVideoIds(videoIds);
+
+            DeleteVideoResponse response = client.getAcsResponse(request);
+
+            System.out.print("RequestId = " + response.getRequestId() + "\n");
+
+        } catch (ClientException e) {
             throw new EduException(20001, "视频删除失败");
         }
     }

@@ -1,22 +1,31 @@
 package com.lyg.edu.service.impl;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lyg.edu.common.R;
 import com.lyg.edu.entity.Course;
 import com.lyg.edu.entity.CourseDescription;
 import com.lyg.edu.entity.CourseDetails;
+import com.lyg.edu.entity.Video;
 import com.lyg.edu.entity.query.CourseQuery;
 import com.lyg.edu.entity.query.CourseWrapper;
 import com.lyg.edu.mapper.CourseMapper;
+import com.lyg.edu.service.ChapterService;
 import com.lyg.edu.service.CourseDescriptionService;
 import com.lyg.edu.service.CourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lyg.edu.service.VideoService;
+import com.lyg.edu.service.feignservice.FeignVideoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -30,7 +39,16 @@ import org.springframework.util.StringUtils;
 @Transactional
 public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> implements CourseService {
     @Autowired
-    private CourseDescriptionService service;
+    //课程细节service
+    private CourseDescriptionService descriptionService;
+    @Autowired
+    //远程调用feignservice
+    private FeignVideoService feignVideoService;
+    @Autowired
+    //video的service
+    private VideoService videoService;
+    @Autowired
+    private ChapterService chapterService;
 
     @Override
     public void pageQuery(Page<Course> pageParam, CourseWrapper courseWrapper) {
@@ -76,6 +94,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
      * @return
      */
     @Override
+    @SentinelResource(value = "saveCourse")
     public R saveCourse(CourseQuery query) {
         if (query == null) {
             return R.error().message("没有数据");
@@ -91,13 +110,14 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         CourseDescription courseDescription = new CourseDescription();
         courseDescription.setId(course.getId());
         courseDescription.setDescription(query.getDescription());
-        service.save(courseDescription);
+        descriptionService.save(courseDescription);
 
         return R.ok().data("course", query);
 
     }
 
     @Override
+    @SentinelResource(value = "getCourseById")
     public R getCourseById(String id) {
 
         CourseQuery query = new CourseQuery();
@@ -106,7 +126,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
         BeanUtils.copyProperties(course, query);
 
-        CourseDescription description = service.getById(id);
+        CourseDescription description = descriptionService.getById(id);
         if (description != null) {
             BeanUtils.copyProperties(description, query);
         }
@@ -116,12 +136,13 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     }
 
     @Override
+    @SentinelResource(value = "deleteCourseById")
     public R deleteCourseById(String id) {
 
         //1.删除数据库course表该信息
         int i = baseMapper.deleteById(id);
         //2.删除数据库courseDescription表该信息
-        boolean flag = service.removeById(id);
+        boolean flag = descriptionService.removeById(id);
         if (i > 0 && flag == true) {
             return R.ok().message("删除成功");
         }
@@ -154,14 +175,45 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         CourseDescription courseDescription = new CourseDescription();
         courseDescription.setId(query.getId());
         courseDescription.setDescription(description);
-        service.updateById(courseDescription);
+        descriptionService.updateById(courseDescription);
 
         return R.ok().data("course", query);
     }
 
     @Override
     public CourseDetails getCourseDetails(String id) {
-        CourseDetails details= baseMapper.getCourseDetails(id);
+        CourseDetails details = baseMapper.getCourseDetails(id);
         return details;
     }
+
+    @Override
+    /**
+     * 这是一个超级垃圾的代码,可优化度非常高,首先,批量删除阿里云视频可以放到一个消息中间件中去处理,其次,好多删除请求其实也是可以延迟删除的
+     */
+    public R deleteCourse(String id) {
+        //先查出来chapter的各个id
+        List<String> chapterIdList = baseMapper.getChapterId(id);
+        //在查出来Video
+        List<Video> videos = videoService.getVideosByIds(chapterIdList);
+        //通过course的Id来删除edu_course_description
+        videoService.removeVideoById(id);
+        //通过VideoSourceId去阿里云删除各个视频
+
+
+        List<String> videoSourceIds = videos.stream().map(v -> v.getVideoSourceId()).collect(Collectors.toList());
+        //批量删除阿里云视频
+        feignVideoService.removeVideos(videoSourceIds);
+
+        //通过edu_video的id来删除edu_video
+        List<String> videoIds = videos.stream().map(v -> v.getId()).collect(Collectors.toList());
+
+        videoService.removeByIds(videoIds);
+        //批量删除edu_chapter的值
+        chapterService.removeByIds(chapterIdList);
+        //删除该course的值
+        baseMapper.deleteById(id);
+        return R.ok().message("删除课程成功");
+    }
+
+
 }

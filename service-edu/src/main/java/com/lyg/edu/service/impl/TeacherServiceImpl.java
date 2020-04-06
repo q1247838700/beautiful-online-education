@@ -1,5 +1,6 @@
 package com.lyg.edu.service.impl;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lyg.edu.entity.Teacher;
@@ -26,6 +27,7 @@ import java.util.Date;
 public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> implements TeacherService {
 
     @Override
+    @SentinelResource(value = "pageQUery")
     public void pageQUery(Page<Teacher> teacherPage, TeacherQuery teacher) {
         QueryWrapper<Teacher> wrapper = new QueryWrapper<>();
 

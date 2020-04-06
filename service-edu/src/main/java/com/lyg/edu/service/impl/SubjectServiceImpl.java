@@ -1,5 +1,6 @@
 package com.lyg.edu.service.impl;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lyg.edu.common.R;
 import com.lyg.edu.entity.Subject;
@@ -35,6 +36,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 
 
     @Override
+    @SentinelResource(value = "importSubjects")
     public R importSubjects(MultipartFile file) {
         HSSFWorkbook workbook = null;
         InputStream inputStream = null;
@@ -149,6 +151,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 
 
     @Override
+    @SentinelResource(value = "getSubjects")
     public R getSubjects() {
         //获取数据库subject表的全部数据
         List<Subject> subjects = baseMapper.selectList(null);

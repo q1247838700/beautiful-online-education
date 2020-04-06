@@ -9,4 +9,9 @@
     LEFT JOIN edu_teacher t ON c.teacher_id=t.id
     WHERE c.id=#{id}
 </select>
+    <select id="getChapterId" resultType="java.lang.String">
+        select ch.id chapterId from edu_course cou
+                   JOIN edu_chapter ch on ch.course_id=cou.id
+        WHERE cou.id=#{id}
+    </select>
 </mapper>

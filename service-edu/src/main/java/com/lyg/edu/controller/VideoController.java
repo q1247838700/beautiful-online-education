@@ -3,12 +3,12 @@ package com.lyg.edu.controller;
 
 import com.lyg.edu.common.R;
 import com.lyg.edu.entity.Video;
-import com.lyg.edu.service.VideoService;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Severity;
+import com.lyg.edu.service.feignservice.FeignVideoService;
+import com.lyg.edu.service.VideoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -24,6 +24,10 @@ import javax.print.attribute.standard.Severity;
 public class VideoController {
     @Autowired
     private VideoService service;
+
+
+    @Autowired
+    private FeignVideoService feignVideoService;
 
     /**
      * 增
@@ -44,17 +48,20 @@ public class VideoController {
      */
     @DeleteMapping("/{id}")
     public R removeVideo(@PathVariable String id) {
-        boolean b = service.removeById(id);
-        if (b) {
-            return R.ok().message("删除成功");
-        } else {
-            return R.error().message("删除失败");
-        }
+        Video video = service.getById(id);
+        String videoSourceId = video.getVideoSourceId();
+        //调用feign来删除
+        R video1 = feignVideoService.removeVideo(videoSourceId);
+        System.out.println(video1.getMessage());
+        boolean flag = service.removeVideoById(id);
+        return R.ok().message("成功");
+
 
     }
 
     /**
      * 修改
+     *
      * @param video
      * @return
      */

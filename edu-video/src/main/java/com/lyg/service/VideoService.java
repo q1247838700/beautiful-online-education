@@ -2,6 +2,8 @@ package com.lyg.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * @author lyg
  * @create 2020-04-04-20:29
@@ -19,4 +21,6 @@ public interface VideoService {
      * @param videoId
      */
     void removeVideo(String videoId);
+
+    void removeManyVideo(List<String> videoIdList);
 }

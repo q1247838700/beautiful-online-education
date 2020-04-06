@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lyg.edu.entity.CourseDetails;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * <p>
  * 课程 Mapper 接口
@@ -20,4 +22,6 @@ public interface CourseMapper extends BaseMapper<Course> {
      * @return
      */
     CourseDetails getCourseDetails(@Param("id") String id);
+
+    List<String> getChapterId(String id);
 }
