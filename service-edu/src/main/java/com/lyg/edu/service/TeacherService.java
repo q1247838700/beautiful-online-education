@@ -5,6 +5,8 @@ import com.lyg.edu.entity.Teacher;
 import com.lyg.edu.entity.query.TeacherQuery;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Map;
+
 /**
  * <p>
  * 讲师 服务类
@@ -16,4 +18,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface TeacherService extends IService<Teacher> {
 
     void pageQUery(Page<Teacher> teacherPage, TeacherQuery teacher);
+
+    Map<String, Object> getTeacherAndCourseById(String id);
 }

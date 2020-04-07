@@ -1,10 +1,13 @@
 package com.lyg.edu.service.impl;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lyg.edu.entity.CourseDetails;
+import com.lyg.edu.entity.query.ChapterDto;
 import com.lyg.edu.entity.query.CourseWrapper;
+import com.lyg.edu.entity.query.FrontCourseDetails;
 import com.lyg.edu.service.CourseService;
 import com.lyg.edu.service.VideoService;
 import com.lyg.edu.service.feignservice.FeignVideoService;
@@ -23,7 +26,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -49,6 +54,12 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Autowired
     private ChapterService chapterService;
 
+    /**
+     * 有条件的分页查询,判断各个查询条件
+     *
+     * @param pageParam     page插件
+     * @param courseWrapper 一个包装实体类
+     */
     @Override
     public void pageQuery(Page<Course> pageParam, CourseWrapper courseWrapper) {
 
@@ -192,26 +203,63 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     public R deleteCourse(String id) {
         //先查出来chapter的各个id
         List<String> chapterIdList = baseMapper.getChapterId(id);
-        //在查出来Video
-        List<Video> videos = videoService.getVideosByIds(chapterIdList);
+        if (chapterIdList.size() != 0) {
+            //在查出来Video
+            List<Video> videos = videoService.getVideosByIds(chapterIdList);
+            if (videos.size() != 0) {
+                //通过VideoSourceId去阿里云删除各个视频
+                List<String> videoSourceIds = videos.stream().map(v -> v.getVideoSourceId()).collect(Collectors.toList());
+                //批量删除阿里云视频
+                feignVideoService.removeVideos(videoSourceIds);
+                //通过edu_video的id来删除edu_video
+                List<String> videoIds = videos.stream().map(v -> v.getId()).collect(Collectors.toList());
+                videoService.removeByIds(videoIds);
+            }
+
+
+
+            //批量删除edu_chapter的值
+            chapterService.removeByIds(chapterIdList);
+        }
+
         //通过course的Id来删除edu_course_description
         videoService.removeVideoById(id);
-        //通过VideoSourceId去阿里云删除各个视频
-
-
-        List<String> videoSourceIds = videos.stream().map(v -> v.getVideoSourceId()).collect(Collectors.toList());
-        //批量删除阿里云视频
-        feignVideoService.removeVideos(videoSourceIds);
-
-        //通过edu_video的id来删除edu_video
-        List<String> videoIds = videos.stream().map(v -> v.getId()).collect(Collectors.toList());
-
-        videoService.removeByIds(videoIds);
-        //批量删除edu_chapter的值
-        chapterService.removeByIds(chapterIdList);
         //删除该course的值
         baseMapper.deleteById(id);
         return R.ok().message("删除课程成功");
+    }
+
+    @Override
+    public Map<String, Object> getCourseDetailsById(String id) {
+        //求出来该课程的各个描述
+        FrontCourseDetails details = baseMapper.getCourseDetailsById(id);
+        //求出来该课程的章节和视频目录
+        List<ChapterDto> chapterTree = chapterService.getChapterTree(id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("details", details);
+        map.put("chapterTree", chapterTree);
+        return map;
+
+
+    }
+
+    /**
+     * 前端查询课程列表,要求查出所有已发布的
+     *
+     * @param page
+     * @param limit
+     * @return
+     */
+    @Override
+    public Page<Course> getCourseFront(Integer page, Integer limit) {
+
+        //page插件
+        Page<Course> page1 = new Page<>(page, limit);
+        //包装wrapper条件
+        QueryWrapper<Course> wrapper = new QueryWrapper<>();
+        wrapper.eq("status", "true");
+        baseMapper.selectPage(page1, wrapper);
+        return page1;
     }
 
 

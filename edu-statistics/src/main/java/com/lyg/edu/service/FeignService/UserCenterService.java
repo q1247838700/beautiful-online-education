@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @author lyg
  * @create 2020-04-06-23:00
  */
+
 @FeignClient(value = "edu-user-center")
 public interface UserCenterService {
     /**
@@ -16,7 +17,7 @@ public interface UserCenterService {
      * @param day
      * @return
      */
-    @GetMapping(value = "/edu/user/center/countRegister/{day}")
+    @GetMapping(value = "/user/center/countRegister/{day}")
     public R registerCount(@PathVariable("day") String day);
 
 }

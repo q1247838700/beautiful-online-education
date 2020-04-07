@@ -3,6 +3,7 @@ package com.lyg.edu.mapper;
 import com.lyg.edu.entity.CourseDetails;
 import com.lyg.edu.entity.Course;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.lyg.edu.entity.query.FrontCourseDetails;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public interface CourseMapper extends BaseMapper<Course> {
     CourseDetails getCourseDetails(@Param("id") String id);
 
     List<String> getChapterId(String id);
+
+    FrontCourseDetails getCourseDetailsById(String id);
 }

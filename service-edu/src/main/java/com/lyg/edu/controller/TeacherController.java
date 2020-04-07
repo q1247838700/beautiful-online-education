@@ -51,12 +51,7 @@ public class TeacherController {
     @ApiOperation(value = "通过id查询教师")
     @GetMapping("/{id}")
     public R getById(@PathVariable("id") String id) {
-        //代码块为自定义异常展示和使用
-//        try {
-//            int i=10/0;
-//        } catch (Exception e) {
-//            throw new EduException(20001,"自定义异常");
-//        }
+
         Teacher teacher = service.getById(id);
         return R.ok().data("teacher", teacher);
 

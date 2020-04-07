@@ -18,4 +18,13 @@ public class VideoDto {
      * 标题
      */
     private String title;
+
+    /**
+     * 视频的vid
+     */
+    private String videoSourceId;
+    /**
+     * 是否免费
+     */
+    private Integer isFree;
 }

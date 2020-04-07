@@ -14,4 +14,17 @@
                    JOIN edu_chapter ch on ch.course_id=cou.id
         WHERE cou.id=#{id}
     </select>
+    <select id="getCourseDetailsById" resultType="com.lyg.edu.entity.query.FrontCourseDetails">
+         SELECT c.id id,c.price price ,c.title title, par.title parTitle,sub.title subTitle ,c.cover cover,c.buy_count buyCount,c.lesson_num lessonNum,c.view_count viewCount,
+                cd.description description,
+                 tea.id teacherId,
+                tea.`name` teacherName,
+                tea.intro intro
+                from edu_course c
+                join edu_course_description cd on c.id=cd.id
+                join edu_teacher tea on c.teacher_id=tea.id
+                join edu_subject par ON c.parent_subject_id=par.id
+                join edu_subject sub on c.subject_id=sub.id
+                WHERE c.id=#{id}
+    </select>
 </mapper>

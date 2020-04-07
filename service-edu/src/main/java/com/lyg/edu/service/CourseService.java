@@ -7,6 +7,9 @@ import com.lyg.edu.common.R;
 import com.lyg.edu.entity.Course;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lyg.edu.entity.query.CourseQuery;
+import com.lyg.edu.entity.query.FrontCourseDetails;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -33,4 +36,7 @@ public interface CourseService extends IService<Course> {
     R deleteCourse(String id);
 
 
+    Map<String,Object> getCourseDetailsById(String id);
+
+    Page<Course> getCourseFront(Integer page, Integer limit);
 }

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/edu/user/center")
+@RequestMapping("/user/center")
 public class UserCenterController {
     @Autowired
     private UserCenterService service;
