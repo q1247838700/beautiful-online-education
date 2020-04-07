@@ -1,9 +1,9 @@
 package com.lyg.edu.controller;
 
 
-import com.lyg.edu.common.R;
 import com.lyg.edu.entity.Subject;
 import com.lyg.edu.service.SubjectService;
+import com.lyg.edu.common.R;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

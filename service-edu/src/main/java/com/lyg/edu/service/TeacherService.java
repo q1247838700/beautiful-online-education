@@ -2,8 +2,8 @@ package com.lyg.edu.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lyg.edu.entity.Teacher;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.lyg.edu.entity.query.TeacherQuery;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>

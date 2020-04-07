@@ -1,8 +1,8 @@
 package com.lyg.edu.mapper;
 
+import com.lyg.edu.entity.CourseDetails;
 import com.lyg.edu.entity.Course;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.lyg.edu.entity.CourseDetails;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

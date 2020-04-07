@@ -16,5 +16,5 @@ import java.util.List;
  */
 public interface VideoMapper extends BaseMapper<Video> {
 
-    List<Video> getVideoByChapterIds(@Param("chapterListIds")List chapterListIds);
+    List<Video> getVideoByChapterIds(@Param("chapterListIds") List chapterListIds);
 }

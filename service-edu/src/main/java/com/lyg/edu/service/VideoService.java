@@ -3,8 +3,6 @@ package com.lyg.edu.service;
 import com.lyg.edu.common.R;
 import com.lyg.edu.entity.Video;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.apache.ibatis.annotations.Param;
-import org.apache.poi.ss.formula.functions.T;
 
 import java.util.List;
 
@@ -29,5 +27,5 @@ public interface VideoService extends IService<Video> {
      * @param chapterListIds
      * @return
      */
-    List<Video> getVideosByIds( List chapterListIds);
+    List<Video> getVideosByIds(List chapterListIds);
 }

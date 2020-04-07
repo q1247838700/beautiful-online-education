@@ -3,22 +3,19 @@ package com.lyg.edu.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.lyg.edu.common.R;
-import com.lyg.edu.entity.Course;
 import com.lyg.edu.entity.CourseDetails;
-import com.lyg.edu.entity.query.CourseQuery;
 import com.lyg.edu.entity.query.CourseWrapper;
 import com.lyg.edu.service.CourseService;
 import com.lyg.edu.service.feignservice.FeignVideoService;
-import io.swagger.annotations.Api;
+import com.lyg.edu.common.R;
+import com.lyg.edu.entity.Course;
+import com.lyg.edu.entity.query.CourseQuery;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * <p>

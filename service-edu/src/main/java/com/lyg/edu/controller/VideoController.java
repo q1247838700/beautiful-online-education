@@ -3,11 +3,10 @@ package com.lyg.edu.controller;
 
 import com.lyg.edu.common.R;
 import com.lyg.edu.entity.Video;
-
-import com.lyg.edu.service.feignservice.FeignVideoService;
 import com.lyg.edu.service.VideoService;
+import com.lyg.edu.service.feignservice.FeignVideoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 /**

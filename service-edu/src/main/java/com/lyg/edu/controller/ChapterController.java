@@ -2,11 +2,10 @@ package com.lyg.edu.controller;
 
 
 import com.lyg.edu.common.R;
-import com.lyg.edu.entity.Chapter;
 import com.lyg.edu.entity.query.ChapterDto;
+import com.lyg.edu.entity.Chapter;
 import com.lyg.edu.service.ChapterService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

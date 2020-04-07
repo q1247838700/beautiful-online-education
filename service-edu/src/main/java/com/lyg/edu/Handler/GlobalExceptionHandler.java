@@ -1,8 +1,8 @@
 package com.lyg.edu.Handler;
 
 
-import com.lyg.edu.common.EduException;
 import com.lyg.edu.common.R;
+import com.lyg.edu.common.EduException;
 
 import com.lyg.edu.utils.ExceptionUtil;
 import lombok.extern.slf4j.Slf4j;

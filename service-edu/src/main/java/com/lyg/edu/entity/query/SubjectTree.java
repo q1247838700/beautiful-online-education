@@ -1,10 +1,5 @@
 package com.lyg.edu.entity.query;
 
-import com.lyg.edu.service.SubjectService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 

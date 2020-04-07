@@ -1,15 +1,12 @@
 package com.lyg.controller;
 
 import com.lyg.edu.common.R;
-import com.lyg.service.FeignService.FeignTeacherService;
 import com.lyg.service.VideoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.ws.rs.Path;
 import java.util.List;
 
 /**
